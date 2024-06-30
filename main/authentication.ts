@@ -26,9 +26,9 @@ export default class Authentication {
     }
 
     checkAuthentication(){
-        this._application.log('authenticationV2', '[checkAuthentication()] Starting token check...')
+        this._application.log('authenticationV2', '[checkAuthentication()] 开始检查 token...')
         if(this._tokenStore.hasValidAuthTokens()){
-            this._application.log('authenticationV2', '[checkAuthentication()] Tokens are valid.')
+            this._application.log('authenticationV2', '[checkAuthentication()] Tokens 有效.')
             this.startSilentFlow()
 
             return true
@@ -36,13 +36,13 @@ export default class Authentication {
         } else {
             if(this._tokenStore.getUserToken() !== undefined){
                 // We have a user token, lets try to refresh it.
-                this._application.log('authenticationV2', '[checkAuthentication()] Tokens are expired but we have a user token. Lets try to refresh the tokens.')
+                this._application.log('authenticationV2', '[checkAuthentication()] Tokens 已过期, 但我们有一个用户 Tokens. 正在尝试刷新 Tokens.')
                 this.startSilentFlow()
 
                 return true
     
             } else {
-                this._application.log('authenticationV2', '[checkAuthentication()] No tokens are present.')
+                this._application.log('authenticationV2', '[checkAuthentication()] 不存在 Tokens.')
                 return false
             }
         }
@@ -53,14 +53,14 @@ export default class Authentication {
         this._isAuthenticating = true
 
         this._xal.refreshTokens(this._tokenStore).then(() => {
-            this._application.log('authenticationV2', '[startSilentFlow()] Tokens have been refreshed')
+            this._application.log('authenticationV2', '[startSilentFlow()] Tokens 已刷新')
 
             this.getStreamingToken(this._tokenStore).then((streamingTokens) => {
                 if(streamingTokens.xCloudToken !== null){
-                    this._application.log('authenticationV2', '[startSilentFlow()] Retrieved both xHome and xCloud tokens')
+                    this._application.log('authenticationV2', '[startSilentFlow()] 已检索 xHome 和 xCloud Tokens')
                     this._appLevel = 2
                 } else {
-                    this._application.log('authenticationV2', '[startSilentFlow()] Retrieved xHome token only')
+                    this._application.log('authenticationV2', '[startSilentFlow()] 仅检索到 xHome Token')
                     this._appLevel = 1
                 }
 
