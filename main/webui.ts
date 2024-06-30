@@ -15,7 +15,7 @@ export default class WebUI {
 
     constructor(application:Application){
         this._application = application
-        this._application.log('webui', 'Loaded WebUI Plugin')
+        this._application.log('webui', '已加载 WebUI 插件')
 
         const rawSettings = this._application._store.get('settings', defaultSettings) as object
         const settings = {...defaultSettings, ...rawSettings}
@@ -30,7 +30,7 @@ export default class WebUI {
     }
 
     startServer(port:number = 3000){
-        this._application.log('webui', 'Starting webserver...')
+        this._application.log('webui', '正在启动 Web 服务器...')
         this._express = express()
         this._ws = expressWS(this._express)
         this._ipc = this._application._ipc
@@ -70,7 +70,7 @@ export default class WebUI {
 
             ws.on('message', (msg) => {
                 const ipcData = JSON.parse(msg)
-                this._application.log('webui:websocket', 'Received event:', ipcData)
+                this._application.log('webui:websocket', '收到的事件:', ipcData)
 
                 this._application._webUI._ipc._channels[ipcData.channel].onEvent(ipcData.channel, undefined, {
                     action: ipcData.action,
@@ -95,13 +95,13 @@ export default class WebUI {
 
 
         this._server = this._express.listen(port, () => {
-            this._application.log('webui', 'Webserver running on port:', port)
-            console.log(`Webserver started on port: ${port}`)
+            this._application.log('webui', 'Web 服务器端口:', port)
+            console.log(`Web 服务器端口: ${port}`)
         })
     }
 
     stopServer(){
-        this._application.log('webui', 'Stopping webserver...')
+        this._application.log('webui', '正在停止 Web 服务器...')
         if(this._express){
             this._server.close()
             delete this._express
